@@ -1,25 +1,42 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import Register from './components/Register';
+import Login from './components/Login';
+import GameList from './components/GameList';
+import AddGame from './components/AddGame';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const App = () => {
+    const [user, setUser] = useState(null);
+    const [games, setGames] = useState([]);
+
+    const handleRegister = (user) => {
+        setUser(user);
+    };
+
+    const handleLogin = (user) => {
+        setUser(user);
+    };
+
+    const handleGameAdded = (newGame) => {
+        setGames([...games, newGame]);
+    };
+
+    return (
+        <div className="App">
+            {!user ? (
+                <>
+                    <Register onRegister={handleRegister} />
+                    <Login onLogin={handleLogin} />
+                </>
+            ) : (
+                <>
+                    <h1>Welcome, {user.username}!</h1>
+                    <AddGame onGameAdded={handleGameAdded} userId={user.id} />
+                    <GameList games={games} />
+                </>
+            )}
+        </div>
+    );
+};
 
 export default App;
